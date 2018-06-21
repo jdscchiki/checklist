@@ -11,5 +11,6 @@
     <module>checklist-business</module>
     <module>checklist-persistence</module>
     <module>checklist-service</module>
+    <module>checklist-log</module>
   </modules>
 </project>
