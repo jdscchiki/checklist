@@ -6,11 +6,17 @@
 package com.jbadcode.checklist.log;
 
 import com.jbadcode.checklist.log.exception.ApplicationException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 
 /**
+ *
+ * Manage logging logic. 
+ * The only reason for te existence of this ejb is because
+ * in future versions of the application the log will be saved on another
+ * aditional place.
  *
  * @author segurajd
  */
@@ -18,21 +24,33 @@ import javax.ejb.LocalBean;
 @LocalBean
 public class LoggerBean {
 
-    
-    
-    public void log(String message){
-        
+    Class baseClazz;
+
+    public void setBaseClazz(Class baseClazz) {
+        this.baseClazz = baseClazz;
     }
-    
-    public void log(String message, ApplicationException applicationException){
-        
+
+    public void log(String message) {
+        if (baseClazz == null) {
+            Logger.getGlobal().log(Level.WARNING, message);
+        } else {
+            Logger.getLogger(baseClazz.getName()).log(Level.WARNING, message);
+        }
     }
-    
-    public void log(String message, Class clazz){
-        
+
+    public void log(String message, ApplicationException applicationException) {
+        if (baseClazz == null) {
+            Logger.getGlobal().log(Level.WARNING, message, applicationException);
+        } else {
+            Logger.getLogger(baseClazz.getName()).log(Level.WARNING, message, applicationException);
+        }
     }
-    
-    public void log(String message, Class clazz, ApplicationException applicationException){
-        
+
+    public void log(String message, Class clazz) {
+        Logger.getLogger(clazz.getName()).log(Level.WARNING, message);
+    }
+
+    public void log(String message, Class clazz, ApplicationException applicationException) {
+        Logger.getLogger(clazz.getName()).log(Level.WARNING, message, applicationException);
     }
 }

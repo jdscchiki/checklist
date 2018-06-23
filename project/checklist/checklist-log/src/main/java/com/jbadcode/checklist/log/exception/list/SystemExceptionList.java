@@ -3,12 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.jbadcode.checklist.log.exception;
+package com.jbadcode.checklist.log.exception.list;
 
 /**
  *
  * @author segurajd
  */
-public enum SystemExceptionEnum {
-    
+public enum SystemExceptionList implements ExceptionListEnum {
+
+    SE_000_001;
+
+    @Override
+    public String getCode() {
+        return this.name();
+    }
 }

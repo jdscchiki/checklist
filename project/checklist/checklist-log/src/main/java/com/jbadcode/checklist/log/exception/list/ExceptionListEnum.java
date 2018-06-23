@@ -3,13 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.jbadcode.checklist.log.exception;
+package com.jbadcode.checklist.log.exception.list;
 
 /**
  *
- * @author segurajd
+ * @author Juan David Segura
  */
-public enum ApplicationExceptionEnum {
-    
-    
+public interface ExceptionListEnum {
+
+    String getCode();
+
 }
