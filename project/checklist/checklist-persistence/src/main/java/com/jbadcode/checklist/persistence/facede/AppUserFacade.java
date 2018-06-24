@@ -7,9 +7,11 @@ package com.jbadcode.checklist.persistence.facede;
 
 import com.jbadcode.checklist.persistence.entity.AppUser;
 import com.jbadcode.checklist.persistence.entity.AppUser_;
+import com.jbadcode.checklist.persistence.entity.State_;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -32,8 +34,8 @@ public class AppUserFacade extends AbstractFacade<AppUser> {
     public AppUserFacade() {
         super(AppUser.class);
     }
-    
-    public AppUser getByNick(String nick) {
+
+    public AppUser getByNick(String nick) throws PersistenceException {
         CriteriaBuilder cb = getCriteriaBuilder();
         CriteriaQuery<AppUser> cq = cb.createQuery(AppUser.class);
 
@@ -41,8 +43,10 @@ public class AppUserFacade extends AbstractFacade<AppUser> {
         cq.
                 select(root).
                 where(
-                        cb.equal(root.get(AppUser_.nick), nick));
-        
+                        cb.equal(root.get(AppUser_.nick), nick),
+                        cb.equal(root.get(AppUser_.state).get(State_.id), 1)
+                );
+
         return em.
                 createQuery(cq).
                 getSingleResult();

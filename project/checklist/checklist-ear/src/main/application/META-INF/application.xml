@@ -8,6 +8,9 @@
         <ejb>/checklist-business-1.0.jar</ejb>
     </module>
     <module>
+        <ejb>/checklist-log-1.0.jar</ejb>
+    </module>
+    <module>
         <web>
             <web-uri>/checklist-service-1.0.war</web-uri>
             <context-root>/checklist</context-root>

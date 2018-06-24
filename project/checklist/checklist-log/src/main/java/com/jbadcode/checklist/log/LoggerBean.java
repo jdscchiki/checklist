@@ -38,11 +38,13 @@ public class LoggerBean {
         }
     }
 
-    public void log(String message, ApplicationException applicationException) {
+    public void log(String message, ApplicationException applicationException) throws ApplicationException {
         if (baseClazz == null) {
             Logger.getGlobal().log(Level.WARNING, message, applicationException);
+            throw applicationException;
         } else {
             Logger.getLogger(baseClazz.getName()).log(Level.WARNING, message, applicationException);
+            throw applicationException;
         }
     }
 
@@ -50,7 +52,8 @@ public class LoggerBean {
         Logger.getLogger(clazz.getName()).log(Level.WARNING, message);
     }
 
-    public void log(String message, Class clazz, ApplicationException applicationException) {
+    public void log(String message, Class clazz, ApplicationException applicationException) throws ApplicationException {
         Logger.getLogger(clazz.getName()).log(Level.WARNING, message, applicationException);
+        throw applicationException;
     }
 }

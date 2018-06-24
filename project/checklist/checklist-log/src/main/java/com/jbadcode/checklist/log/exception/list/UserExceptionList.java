@@ -13,7 +13,11 @@ public enum UserExceptionList implements ExceptionListEnum {
     /**
      * USER NOT FOUND
      */
-    UE_000_001;
+    UE_000_001,
+    /**
+     * BAD PASSWORD
+     */
+    UE_000_002;
 
     @Override
     public String getCode() {

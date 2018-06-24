@@ -3,6 +3,8 @@
   <persistence-unit name="com.jbadcode_checklist-persistence_ejb_1.0PU" transaction-type="JTA">
     <jta-data-source>jdbc/check_list_db</jta-data-source>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
-    <properties/>
+    <properties>
+      <property name="eclipselink.cache.shared.default" value="false"/>
+    </properties>
   </persistence-unit>
 </persistence>

@@ -5,17 +5,22 @@
  */
 package com.jbadcode.checklist.log.exception;
 
+import com.jbadcode.checklist.log.exception.list.ExceptionListEnum;
+
 /**
  *
  * @author segurajd
  */
 public class ApplicationException extends Exception {
 
+    private ExceptionListEnum exceptionCode;
+
     /**
      * Creates a new instance of <code>ApplicationException</code> without
      * detail message.
      */
     public ApplicationException() {
+        super();
     }
 
     /**
@@ -36,4 +41,27 @@ public class ApplicationException extends Exception {
         super(cause);
     }
 
+    public ApplicationException(ExceptionListEnum exceptionCode, String message) {
+        super(message);
+        this.exceptionCode = exceptionCode;
+    }
+
+    public ApplicationException(ExceptionListEnum exceptionCode, String message, Throwable cause) {
+        super(message, cause);
+        this.exceptionCode = exceptionCode;
+    }
+
+    public ApplicationException(ExceptionListEnum exceptionCode, Throwable cause) {
+        super(cause);
+        this.exceptionCode = exceptionCode;
+    }
+
+    public ApplicationException(ExceptionListEnum exceptionCode) {
+        super();
+        this.exceptionCode = exceptionCode;
+    }
+
+    public ExceptionListEnum getExceptionCode() {
+        return exceptionCode;
+    }
 }

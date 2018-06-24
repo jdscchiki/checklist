@@ -11,7 +11,7 @@ package com.jbadcode.checklist.log.exception.list;
  */
 public enum ApplicationExceptionList implements ExceptionListEnum {
     /**
-     * ERROR
+     * MULTIPLE USERS WHIT THE SAME NICK
      */
     AE_000_001;
 
