@@ -46,15 +46,15 @@ public class AppUserBean {
         } catch (EJBTransactionRolledbackException ex) {
             if (ex.getCause() instanceof NoResultException) {
                 throw new ApplicationException(
-                    UserExceptionList.UE_000_001);
+                        UserExceptionList.UE_000_001);
             } else if (ex.getCause() instanceof NonUniqueResultException) {
                 loggerBean.log(null,
-                    new ApplicationException(
-                            ApplicationExceptionList.AE_000_001, ex.getCause()));
+                        new ApplicationException(
+                                ApplicationExceptionList.AE_000_001, ex.getCause()));
             } else if (ex.getCause() instanceof PersistenceException) {
                 loggerBean.log(null,
-                    new ApplicationException(
-                            SystemExceptionList.SE_000_001, ex.getCause()));
+                        new ApplicationException(
+                                SystemExceptionList.SE_000_001, ex.getCause()));
             }
         }
         return null;

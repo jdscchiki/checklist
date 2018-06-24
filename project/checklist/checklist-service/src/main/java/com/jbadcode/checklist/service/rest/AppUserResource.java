@@ -16,6 +16,7 @@ import javax.ejb.Stateless;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -37,6 +38,9 @@ import javax.ws.rs.core.Response;
 public class AppUserResource {
 
     @EJB
+    private SessionBean sessionBean;
+
+    @EJB
     private AppUserBean appUserBean;
 
     @Context
@@ -48,8 +52,6 @@ public class AppUserResource {
     public AppUserResource() {
     }
 
-    private static final Logger logger = Logger.getLogger(AppUserResource.class.getName());
-
     /**
      * Retrieves representation of an instance of
      * com.jbadcode.checklist.service.rest.AppUserResource
@@ -60,13 +62,22 @@ public class AppUserResource {
     @Path("/authenticate")
     public Response authenticate(AppUser appUser) {
         try {
+            appUser = appUserBean.
+                    authenticate(appUser.getNick(), appUser.getPassword());
+            sessionBean.setLogedUser(appUser);
             return Response.
-                    ok(appUserBean.
-                            authenticate(appUser.getNick(), appUser.getPassword())).
+                    ok(appUser).
                     build();
         } catch (Exception e) {
             ExceptionHandler.throwWebApplicationException(e);
         }
         return null;
+    }
+    
+    @DELETE
+    @Path("/invalidate")
+    public Response invalidate(){
+        sessionBean.setLogedUser(null);
+        return Response.ok().build();
     }
 }
