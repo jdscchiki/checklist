@@ -5,13 +5,10 @@
  */
 package com.jbadcode.checklist.service.rest.config;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +41,9 @@ public class ResponseLoggerFilter implements ContainerResponseFilter {
     @Override
     public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) {
         StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.
+                append("Transaction=").
+                append(requestContext.getProperty(RequestProperties.PROCESS_IDENTIFICAROR.name()));
         stringBuilder.
                 append("\nSTATUS=\n\t").
                 append(responseContext.getStatus()).

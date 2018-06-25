@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.Priority;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.Cookie;
@@ -27,6 +28,7 @@ import javax.ws.rs.ext.Provider;
  * @author Juan David Segura
  */
 @Provider
+@Priority(2)
 public class RequestLoggerFilter implements ContainerRequestFilter {
 
     private static final Logger logger = Logger.getLogger(RequestLoggerFilter.class.getName());
@@ -34,6 +36,9 @@ public class RequestLoggerFilter implements ContainerRequestFilter {
     @Override
     public void filter(ContainerRequestContext requestContext) {
         StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.
+                append("Transaction=").
+                append(requestContext.getProperty(RequestProperties.PROCESS_IDENTIFICAROR.name()));
         stringBuilder.
                 append("\nCOMPLETE_URL=\n\t").
                 append(requestContext.getUriInfo().getRequestUri()).

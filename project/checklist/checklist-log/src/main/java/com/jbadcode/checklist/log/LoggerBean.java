@@ -13,8 +13,7 @@ import javax.ejb.LocalBean;
 
 /**
  *
- * Manage logging logic. 
- * The only reason for te existence of this ejb is because
+ * Manage logging logic. The only reason for te existence of this ejb is because
  * in future versions of the application the log will be saved on another
  * aditional place.
  *
@@ -30,7 +29,7 @@ public class LoggerBean {
         this.baseClazz = baseClazz;
     }
 
-    public void log(String message) {
+    public void log(String transactionId, String message) {
         if (baseClazz == null) {
             Logger.getGlobal().log(Level.WARNING, message);
         } else {
@@ -38,7 +37,8 @@ public class LoggerBean {
         }
     }
 
-    public void log(String message, ApplicationException applicationException) throws ApplicationException {
+    public void log(String transactionId, String message,
+            ApplicationException applicationException) throws ApplicationException {
         if (baseClazz == null) {
             Logger.getGlobal().log(Level.WARNING, message, applicationException);
             throw applicationException;
@@ -48,11 +48,16 @@ public class LoggerBean {
         }
     }
 
-    public void log(String message, Class clazz) {
+    public void log(String transactionId,
+            String message,
+            Class clazz) {
         Logger.getLogger(clazz.getName()).log(Level.WARNING, message);
     }
 
-    public void log(String message, Class clazz, ApplicationException applicationException) throws ApplicationException {
+    public void log(String transactionId,
+            String message,
+            Class clazz,
+            ApplicationException applicationException) throws ApplicationException {
         Logger.getLogger(clazz.getName()).log(Level.WARNING, message, applicationException);
         throw applicationException;
     }

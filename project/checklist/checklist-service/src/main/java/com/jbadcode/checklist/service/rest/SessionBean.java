@@ -16,7 +16,7 @@ import javax.ejb.Stateful;
 public class SessionBean {
 
     private AppUser logedUser;
-
+    
     public AppUser getLogedUser() {
         return logedUser;
     }

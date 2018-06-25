@@ -12,6 +12,7 @@ import com.jbadcode.checklist.log.exception.list.SystemExceptionList;
 import com.jbadcode.checklist.log.exception.list.UserExceptionList;
 import com.jbadcode.checklist.persistence.entity.AppUser;
 import com.jbadcode.checklist.persistence.facede.AppUserFacade;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.EJBTransactionRolledbackException;
 import javax.ejb.LocalBean;
@@ -26,13 +27,17 @@ import javax.persistence.PersistenceException;
  */
 @Stateless
 @LocalBean
-public class AppUserBean {
+public class AppUserBean extends BussinesAbstractBean{
 
     @EJB
     private LoggerBean loggerBean;
 
     @EJB
     private AppUserFacade appUserFacade;
+    
+    @PostConstruct
+    public void init(){
+    }
 
     public AppUser authenticate(String nick, String password) throws ApplicationException {
         try {
@@ -48,13 +53,17 @@ public class AppUserBean {
                 throw new ApplicationException(
                         UserExceptionList.UE_000_001);
             } else if (ex.getCause() instanceof NonUniqueResultException) {
-                loggerBean.log(null,
+                loggerBean.log(this.getProcessIdentificator(), 
+                        null,
                         new ApplicationException(
-                                ApplicationExceptionList.AE_000_001, ex.getCause()));
+                                ApplicationExceptionList.AE_000_001, 
+                                ex.getCause()));
             } else if (ex.getCause() instanceof PersistenceException) {
-                loggerBean.log(null,
+                loggerBean.log(this.getProcessIdentificator(), 
+                        null,
                         new ApplicationException(
-                                SystemExceptionList.SE_000_001, ex.getCause()));
+                                SystemExceptionList.SE_000_001, 
+                                ex.getCause()));
             }
         }
         return null;

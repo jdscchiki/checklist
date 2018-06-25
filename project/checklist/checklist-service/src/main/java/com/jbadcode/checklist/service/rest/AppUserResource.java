@@ -6,11 +6,10 @@
 package com.jbadcode.checklist.service.rest;
 
 import com.jbadcode.checklist.business.AppUserBean;
-import com.jbadcode.checklist.log.exception.ApplicationException;
 import com.jbadcode.checklist.persistence.entity.AppUser;
+import com.jbadcode.checklist.service.rest.config.RequestProperties;
 import com.jbadcode.checklist.service.rest.util.ExceptionHandler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ws.rs.core.Context;
@@ -18,11 +17,9 @@ import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.Produces;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PUT;
-import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -44,18 +41,24 @@ public class AppUserResource {
     private AppUserBean appUserBean;
 
     @Context
-    private UriInfo context;
+    private ContainerRequestContext containerRequest;
 
     /**
      * Creates a new instance of AppUserResource
      */
     public AppUserResource() {
     }
+    
+    @PostConstruct
+    public void init(){
+        appUserBean.setProcessIdentificator(containerRequest.getProperty(RequestProperties.PROCESS_IDENTIFICAROR.name()).toString());
+    }
 
     /**
      * Retrieves representation of an instance of
      * com.jbadcode.checklist.service.rest.AppUserResource
      *
+     * @param appUser
      * @return an instance of java.lang.String
      */
     @POST
