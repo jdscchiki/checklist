@@ -44,6 +44,7 @@ public class ResponseLoggerFilter implements ContainerResponseFilter {
         stringBuilder.
                 append("Transaction=").
                 append(requestContext.getProperty(RequestProperties.PROCESS_IDENTIFICAROR.name()));
+        stringBuilder.append(";RESPONSE");
         stringBuilder.
                 append("\nSTATUS=\n\t").
                 append(responseContext.getStatus()).

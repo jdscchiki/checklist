@@ -8,9 +8,6 @@ package com.jbadcode.checklist.service.rest.config;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
@@ -39,6 +36,7 @@ public class RequestLoggerFilter implements ContainerRequestFilter {
         stringBuilder.
                 append("Transaction=").
                 append(requestContext.getProperty(RequestProperties.PROCESS_IDENTIFICAROR.name()));
+        stringBuilder.append(";REQUEST");
         stringBuilder.
                 append("\nCOMPLETE_URL=\n\t").
                 append(requestContext.getUriInfo().getRequestUri()).

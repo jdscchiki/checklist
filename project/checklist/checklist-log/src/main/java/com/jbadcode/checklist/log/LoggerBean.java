@@ -23,42 +23,84 @@ import javax.ejb.LocalBean;
 @LocalBean
 public class LoggerBean {
 
-    Class baseClazz;
+    private Class baseClazz;
+    private String transactionId;
 
     public void setBaseClazz(Class baseClazz) {
         this.baseClazz = baseClazz;
     }
 
-    public void log(String transactionId, String message) {
+    public void setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
+    }
+
+    private String writeMessage(String message) {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append("Transaction=");
+        stringBuilder.append(transactionId);
+        if (message != null && !message.isEmpty()) {
+            stringBuilder.append(";");
+            stringBuilder.append("message=");
+            stringBuilder.append(message);
+        }
+        return stringBuilder.toString();
+    }
+
+    public void log(String message) {
+        message = writeMessage(message);
         if (baseClazz == null) {
-            Logger.getGlobal().log(Level.WARNING, message);
+            Logger.getGlobal().log(
+                    Level.WARNING,
+                    message);
         } else {
-            Logger.getLogger(baseClazz.getName()).log(Level.WARNING, message);
+            Logger.getLogger(
+                    baseClazz.getName()
+            ).log(
+                    Level.WARNING,
+                    message);
         }
     }
 
-    public void log(String transactionId, String message,
+    public void log(String message,
             ApplicationException applicationException) throws ApplicationException {
+        message = writeMessage(message);
         if (baseClazz == null) {
-            Logger.getGlobal().log(Level.WARNING, message, applicationException);
+            Logger.getGlobal().log(
+                    Level.WARNING,
+                    message,
+                    applicationException);
             throw applicationException;
         } else {
-            Logger.getLogger(baseClazz.getName()).log(Level.WARNING, message, applicationException);
+            Logger.getLogger(
+                    baseClazz.getName()
+            ).log(
+                    Level.WARNING,
+                    message,
+                    applicationException);
             throw applicationException;
         }
     }
 
-    public void log(String transactionId,
-            String message,
+    public void log(String message,
             Class clazz) {
-        Logger.getLogger(clazz.getName()).log(Level.WARNING, message);
+        message = writeMessage(message);
+        Logger.getLogger(
+                clazz.getName()
+        ).log(
+                Level.WARNING, message);
     }
 
-    public void log(String transactionId,
-            String message,
+    public void log(String message,
             Class clazz,
             ApplicationException applicationException) throws ApplicationException {
-        Logger.getLogger(clazz.getName()).log(Level.WARNING, message, applicationException);
+        message = writeMessage(message);
+        Logger.getLogger(
+                clazz.getName()
+        ).log(
+                Level.WARNING,
+                message,
+                applicationException);
         throw applicationException;
     }
 }

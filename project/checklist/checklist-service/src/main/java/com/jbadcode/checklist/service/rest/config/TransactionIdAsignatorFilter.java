@@ -17,7 +17,7 @@ import javax.annotation.Priority;
  */
 @Provider
 @Priority(1)
-public class ProcessIdentificationFilter implements ContainerRequestFilter {
+public class TransactionIdAsignatorFilter implements ContainerRequestFilter {
 
     @Override
     public void filter(ContainerRequestContext requestContext) {

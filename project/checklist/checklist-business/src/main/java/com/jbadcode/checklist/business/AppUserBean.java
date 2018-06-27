@@ -27,16 +27,18 @@ import javax.persistence.PersistenceException;
  */
 @Stateless
 @LocalBean
-public class AppUserBean extends BussinesAbstractBean{
+public class AppUserBean extends BussinesAbstractBean {
 
     @EJB
     private LoggerBean loggerBean;
 
     @EJB
     private AppUserFacade appUserFacade;
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
+        loggerBean.setBaseClazz(AppUserBean.class);
+        loggerBean.setTransactionId(getProcessIdentificator());
     }
 
     public AppUser authenticate(String nick, String password) throws ApplicationException {
@@ -53,16 +55,21 @@ public class AppUserBean extends BussinesAbstractBean{
                 throw new ApplicationException(
                         UserExceptionList.UE_000_001);
             } else if (ex.getCause() instanceof NonUniqueResultException) {
-                loggerBean.log(this.getProcessIdentificator(), 
+                loggerBean.log(this.getProcessIdentificator(),
                         null,
                         new ApplicationException(
-                                ApplicationExceptionList.AE_000_001, 
+                                ApplicationExceptionList.AE_000_001,
                                 ex.getCause()));
             } else if (ex.getCause() instanceof PersistenceException) {
-                loggerBean.log(this.getProcessIdentificator(), 
+                loggerBean.log(this.getProcessIdentificator(),
                         null,
                         new ApplicationException(
-                                SystemExceptionList.SE_000_001, 
+                                SystemExceptionList.SE_000_001,
+                                ex.getCause()));
+            } else {
+                loggerBean.log(this.getProcessIdentificator(),
+                        null,
+                        new ApplicationException(
                                 ex.getCause()));
             }
         }
