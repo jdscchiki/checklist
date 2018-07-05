@@ -66,7 +66,7 @@ public class AppUserResource {
         try {
             appUser = appUserBean.
                     authenticate(appUser.getNick(), appUser.getPassword());
-            sessionBean.setLogedUser(appUser);
+            sessionBean.startSession(appUser);
             return Response.
                     ok(appUser).
                     build();
@@ -79,7 +79,7 @@ public class AppUserResource {
     @DELETE
     @Path("/invalidate")
     public Response invalidate(){
-        sessionBean.setLogedUser(null);
+        sessionBean.endSession();
         return Response.ok().build();
     }
 }

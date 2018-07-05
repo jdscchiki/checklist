@@ -5,24 +5,40 @@
  */
 package com.jbadcode.checklist.service.rest;
 
+import com.jbadcode.checklist.log.exception.ApplicationException;
+import com.jbadcode.checklist.log.exception.list.UserExceptionList;
 import com.jbadcode.checklist.persistence.entity.AppUser;
-import javax.ejb.Stateful;
+import com.jbadcode.checklist.service.rest.util.SessionAttributes;
+import javax.ejb.Stateless;
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.core.Context;
 
 /**
  *
  * @author Juan David Segura
  */
-@Stateful
+@Stateless
 public class SessionBean {
 
-    private AppUser logedUser;
-    
-    public AppUser getLogedUser() {
-        return logedUser;
+    @Context
+    private HttpServletRequest request;
+
+    public void startSession(AppUser appUser) {
+        System.out.println((AppUser) request.getSession().getAttribute(SessionAttributes.USER));
+        request.getSession().setAttribute(SessionAttributes.USER, appUser);
     }
 
-    public void setLogedUser(AppUser logedUser) {
-        this.logedUser = logedUser;
+    public AppUser getLoggedAppUser() throws ApplicationException {
+        AppUser appUser = (AppUser) request.getSession().getAttribute(SessionAttributes.USER);
+        if(appUser != null){
+            return appUser;
+        }else{
+            throw new ApplicationException(
+                        UserExceptionList.UE_000_003);
+        }
     }
-    
+
+    public void endSession() {
+        request.getSession().removeAttribute(SessionAttributes.USER);
+    }
 }

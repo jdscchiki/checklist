@@ -17,7 +17,11 @@ public enum UserExceptionList implements ExceptionListEnum {
     /**
      * BAD PASSWORD
      */
-    UE_000_002;
+    UE_000_002,
+    /**
+     * NO LOGED USER
+     */
+    UE_000_003;
 
     @Override
     public String getCode() {
