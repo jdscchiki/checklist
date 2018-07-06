@@ -6,6 +6,8 @@
 package com.jbadcode.checklist.log;
 
 import com.jbadcode.checklist.log.exception.ApplicationException;
+import com.jbadcode.checklist.log.exception.ApplicationExceptionBuilder;
+import com.jbadcode.checklist.log.exception.ApplicationExceptionHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
@@ -22,7 +24,7 @@ import javax.ejb.LocalBean;
 @Stateless
 @LocalBean
 public class LoggerBean {
-
+    
     private Class baseClazz;
     private String transactionId;
 
@@ -102,5 +104,9 @@ public class LoggerBean {
                 message,
                 applicationException);
         throw applicationException;
+    }
+    
+    public ApplicationExceptionBuilder logb(Throwable throwable){
+        return new ApplicationExceptionBuilder(throwable);
     }
 }

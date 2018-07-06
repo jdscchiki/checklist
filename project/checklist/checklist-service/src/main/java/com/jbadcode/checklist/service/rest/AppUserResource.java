@@ -11,6 +11,7 @@ import com.jbadcode.checklist.service.rest.config.RequestProperties;
 import com.jbadcode.checklist.service.rest.util.ExceptionHandler;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.ejb.EJBTransactionRolledbackException;
 import javax.ejb.Stateless;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.Consumes;
@@ -47,9 +48,9 @@ public class AppUserResource {
      */
     public AppUserResource() {
     }
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
         appUserBean.setProcessIdentificator(containerRequest.getProperty(RequestProperties.PROCESS_IDENTIFICAROR.name()).toString());
     }
 
@@ -75,10 +76,11 @@ public class AppUserResource {
         }
         return null;
     }
-    
+
     @DELETE
     @Path("/invalidate")
-    public Response invalidate(){
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response invalidate() {
         sessionBean.endSession();
         return Response.ok().build();
     }

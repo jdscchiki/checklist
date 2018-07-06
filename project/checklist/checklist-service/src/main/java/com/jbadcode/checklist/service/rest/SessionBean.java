@@ -24,7 +24,6 @@ public class SessionBean {
     private HttpServletRequest request;
 
     public void startSession(AppUser appUser) {
-        System.out.println((AppUser) request.getSession().getAttribute(SessionAttributes.USER));
         request.getSession().setAttribute(SessionAttributes.USER, appUser);
     }
 

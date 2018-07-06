@@ -62,7 +62,7 @@ public class ResponseLoggerFilter implements ContainerResponseFilter {
         for (Map.Entry<String, NewCookie> cookie : responseContext.getCookies().entrySet()) {
             String key = cookie.getKey();
             Cookie value = cookie.getValue();
-            stringBuilder.append("\t\t");
+            stringBuilder.append("\t");
             stringBuilder.append(key).append(": ").append(value.getValue());
             stringBuilder.append("\n");
         }

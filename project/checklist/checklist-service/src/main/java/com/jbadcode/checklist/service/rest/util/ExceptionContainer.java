@@ -6,8 +6,12 @@
 package com.jbadcode.checklist.service.rest.util;
 
 import com.jbadcode.checklist.log.exception.ApplicationException;
+import com.jbadcode.checklist.log.exception.list.ApplicationExceptionList;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -16,18 +20,32 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Juan David Segura
  */
 @XmlRootElement
-public class ExceptionContainer implements Serializable{
-    
+public class ExceptionContainer implements Serializable {
+
     private String exceptionCode;
-    
-    private String log;
+
+    private ArrayList<String> log = new ArrayList<>();
 
     public ExceptionContainer() {
     }
-    
+
     public ExceptionContainer(ApplicationException applicationException) {
         this.exceptionCode = applicationException.getExceptionCode().getCode();
-        this.log = Arrays.toString(applicationException.getStackTrace());
+        if (applicationException.getCause() != null) {
+            for (StackTraceElement stackTraceElement : applicationException.getStackTrace()) {
+                log.add(stackTraceElement.toString());
+            }
+        } else {
+            log = null;
+        }
+
+    }
+
+    public ExceptionContainer(ConstraintViolationException constraintViolationException) {
+        this.exceptionCode = ApplicationExceptionList.AE_000_000.getCode();
+        for (ConstraintViolation<?> constraintViolation : constraintViolationException.getConstraintViolations()) {
+            log.add(constraintViolation.getMessage());
+        }
     }
 
     public String getExceptionCode() {
@@ -38,12 +56,11 @@ public class ExceptionContainer implements Serializable{
         this.exceptionCode = exceptionCode;
     }
 
-    @XmlTransient
-    public String getLog() {
+    public ArrayList<String> getLog() {
         return log;
     }
 
-    public void setLog(String log) {
+    public void setLog(ArrayList<String> log) {
         this.log = log;
     }
 

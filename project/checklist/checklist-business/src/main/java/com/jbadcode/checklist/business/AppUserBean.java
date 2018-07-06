@@ -20,6 +20,10 @@ import javax.ejb.Stateless;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceException;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.validation.executable.ExecutableType;
+import javax.validation.executable.ValidateOnExecution;
 
 /**
  *
@@ -27,6 +31,7 @@ import javax.persistence.PersistenceException;
  */
 @Stateless
 @LocalBean
+@ValidateOnExecution(type = ExecutableType.NON_GETTER_METHODS)
 public class AppUserBean extends BussinesAbstractBean {
 
     @EJB
@@ -41,7 +46,10 @@ public class AppUserBean extends BussinesAbstractBean {
         loggerBean.setTransactionId(getProcessIdentificator());
     }
 
-    public AppUser authenticate(String nick, String password) throws ApplicationException {
+    public AppUser authenticate(
+            @NotNull(message = "nick=null") @Size(min = 1, message = "nick=''") String nick,
+            @NotNull(message = "password=null") @Size(min = 1, message = "password=''") String password) 
+            throws ApplicationException {
         try {
             AppUser appUser = appUserFacade.getByNick(nick);
             if (appUser.getPassword().equals(password)) {
