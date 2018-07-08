@@ -30,11 +30,12 @@ public class ApplicationConfig extends Application {
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(com.jbadcode.checklist.service.rest.AppUserResource.class);
-        resources.add(com.jbadcode.checklist.service.rest.GenericResource.class);
         resources.add(com.jbadcode.checklist.service.rest.config.CrossDomainFilter.class);
         resources.add(com.jbadcode.checklist.service.rest.config.RequestLoggerFilter.class);
         resources.add(com.jbadcode.checklist.service.rest.config.ResponseLoggerFilter.class);
         resources.add(com.jbadcode.checklist.service.rest.config.TransactionIdAsignatorFilter.class);
+        resources.add(com.jbadcode.checklist.service.rest.exception.ApplicationExceptionMapper.class);
+        resources.add(com.jbadcode.checklist.service.rest.exception.ValidationExceptionMapper.class);
     }
     
 }

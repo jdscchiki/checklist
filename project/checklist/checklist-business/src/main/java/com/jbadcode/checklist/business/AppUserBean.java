@@ -14,7 +14,6 @@ import com.jbadcode.checklist.persistence.entity.AppUser;
 import com.jbadcode.checklist.persistence.facede.AppUserFacade;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.ejb.EJBTransactionRolledbackException;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.NoResultException;
@@ -34,6 +33,22 @@ import javax.validation.executable.ValidateOnExecution;
 @ValidateOnExecution(type = ExecutableType.NON_GETTER_METHODS)
 public class AppUserBean extends BussinesAbstractBean {
 
+    public enum userExceptionCode implements UserExceptionList {
+        /**
+         * USER NOT FOUND
+         */
+        UE_000_001,
+        /**
+         * BAD PASSWORD
+         */
+        UE_000_002;
+
+        @Override
+        public String getCode() {
+            return this.name();
+        }
+    }
+
     @EJB
     private LoggerBean loggerBean;
 
@@ -48,7 +63,7 @@ public class AppUserBean extends BussinesAbstractBean {
 
     public AppUser authenticate(
             @NotNull(message = "nick=null") @Size(min = 1, message = "nick=''") String nick,
-            @NotNull(message = "password=null") @Size(min = 1, message = "password=''") String password) 
+            @NotNull(message = "password=null") @Size(min = 1, message = "password=''") String password)
             throws ApplicationException {
         try {
             AppUser appUser = appUserFacade.getByNick(nick);
@@ -56,31 +71,21 @@ public class AppUserBean extends BussinesAbstractBean {
                 return appUser;
             } else {
                 throw new ApplicationException(
-                        UserExceptionList.UE_000_002);
+                        userExceptionCode.UE_000_002);
             }
-        } catch (EJBTransactionRolledbackException ex) {
-            if (ex.getCause() instanceof NoResultException) {
-                throw new ApplicationException(
-                        UserExceptionList.UE_000_001);
-            } else if (ex.getCause() instanceof NonUniqueResultException) {
-                loggerBean.log(this.getProcessIdentificator(),
-                        null,
-                        new ApplicationException(
-                                ApplicationExceptionList.AE_000_001,
-                                ex.getCause()));
-            } else if (ex.getCause() instanceof PersistenceException) {
-                loggerBean.log(this.getProcessIdentificator(),
-                        null,
-                        new ApplicationException(
-                                SystemExceptionList.SE_000_001,
-                                ex.getCause()));
-            } else {
-                loggerBean.log(this.getProcessIdentificator(),
-                        null,
-                        new ApplicationException(
-                                ex.getCause()));
-            }
+        } catch (PersistenceException ex) {
+            loggerBean.logb(ex).
+                    handleWithoutLog(
+                            NoResultException.class,
+                            userExceptionCode.UE_000_001).
+                    handle(
+                            NonUniqueResultException.class,
+                            ApplicationExceptionList.AE_000_001).
+                    handle(
+                            PersistenceException.class,
+                            SystemExceptionList.SE_000_001).
+                    handleDefault();
+            return null;
         }
-        return null;
     }
 }

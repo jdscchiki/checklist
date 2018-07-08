@@ -9,23 +9,23 @@ package com.jbadcode.checklist.log.exception.list;
  *
  * @author Juan David Segura
  */
-public enum UserExceptionList implements ExceptionListEnum {
-    /**
-     * USER NOT FOUND
-     */
-    UE_000_001,
-    /**
-     * BAD PASSWORD
-     */
-    UE_000_002,
-    /**
-     * NO LOGED USER
-     */
-    UE_000_003;
+public interface UserExceptionList extends ExceptionListEnum {
+    
+    public enum generalException implements ExceptionListEnum{
+        /**
+         * USER NOT LOGGED
+         */
+        GUE_000_001,
+        /**
+         * BAD_INPUT
+         */
+        GUE_000_002;
+        
 
-    @Override
-    public String getCode() {
-        return this.name();
+        @Override
+        public String getCode() {
+            return this.name();
+        }
     }
-
+    
 }

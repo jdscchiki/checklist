@@ -5,14 +5,17 @@
  */
 package com.jbadcode.checklist.service.rest;
 
+import com.jbadcode.checklist.service.rest.ejb.SessionBean;
 import com.jbadcode.checklist.business.AppUserBean;
+import com.jbadcode.checklist.log.exception.ApplicationException;
 import com.jbadcode.checklist.persistence.entity.AppUser;
 import com.jbadcode.checklist.service.rest.config.RequestProperties;
-import com.jbadcode.checklist.service.rest.util.ExceptionHandler;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.EJBTransactionRolledbackException;
 import javax.ejb.Stateless;
+import javax.validation.executable.ExecutableType;
+import javax.validation.executable.ValidateOnExecution;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -60,21 +63,17 @@ public class AppUserResource {
      *
      * @param appUser
      * @return an instance of java.lang.String
+     * @throws java.lang.Exception
      */
     @POST
     @Path("/authenticate")
-    public Response authenticate(AppUser appUser) {
-        try {
-            appUser = appUserBean.
-                    authenticate(appUser.getNick(), appUser.getPassword());
-            sessionBean.startSession(appUser);
-            return Response.
-                    ok(appUser).
-                    build();
-        } catch (Exception e) {
-            ExceptionHandler.throwWebApplicationException(e);
-        }
-        return null;
+    public Response authenticate(AppUser appUser) throws Exception {
+        appUser = appUserBean.
+                authenticate(appUser.getNick(), appUser.getPassword());
+        sessionBean.startSession(appUser);
+        return Response.
+                ok(appUser).
+                build();
     }
 
     @DELETE

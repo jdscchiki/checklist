@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.jbadcode.checklist.service.rest;
+package com.jbadcode.checklist.service.rest.ejb;
 
 import com.jbadcode.checklist.log.exception.ApplicationException;
 import com.jbadcode.checklist.log.exception.list.UserExceptionList;
@@ -33,7 +33,7 @@ public class SessionBean {
             return appUser;
         }else{
             throw new ApplicationException(
-                        UserExceptionList.UE_000_003);
+                        UserExceptionList.generalException.GUE_000_001);
         }
     }
 

@@ -3,17 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.jbadcode.checklist.service.rest.util;
+package com.jbadcode.checklist.service.rest.exception;
 
 import com.jbadcode.checklist.log.exception.ApplicationException;
-import com.jbadcode.checklist.log.exception.list.ApplicationExceptionList;
+import com.jbadcode.checklist.log.exception.list.UserExceptionList;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -42,7 +40,7 @@ public class ExceptionContainer implements Serializable {
     }
 
     public ExceptionContainer(ConstraintViolationException constraintViolationException) {
-        this.exceptionCode = ApplicationExceptionList.AE_000_000.getCode();
+        this.exceptionCode = UserExceptionList.generalException.GUE_000_002.getCode();
         for (ConstraintViolation<?> constraintViolation : constraintViolationException.getConstraintViolations()) {
             log.add(constraintViolation.getMessage());
         }
