@@ -108,9 +108,9 @@ public class LoggerBean {
 
     public ApplicationExceptionBuilder logb(Throwable throwable) {
         if (throwable instanceof EJBTransactionRolledbackException) {
-            return new ApplicationExceptionBuilder(throwable);
-        }else{
             return new ApplicationExceptionBuilder(throwable.getCause());
+        }else{
+            return new ApplicationExceptionBuilder(throwable);
         }
     }
 }

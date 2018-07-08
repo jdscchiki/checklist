@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.jbadcode.checklist.service.rest.exception;
+package com.jbadcode.checklist.log.exception;
 
 import com.jbadcode.checklist.log.exception.ApplicationException;
 import com.jbadcode.checklist.log.exception.list.UserExceptionList;

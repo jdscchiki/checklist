@@ -7,15 +7,11 @@ package com.jbadcode.checklist.service.rest;
 
 import com.jbadcode.checklist.service.rest.ejb.SessionBean;
 import com.jbadcode.checklist.business.AppUserBean;
-import com.jbadcode.checklist.log.exception.ApplicationException;
 import com.jbadcode.checklist.persistence.entity.AppUser;
 import com.jbadcode.checklist.service.rest.config.RequestProperties;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.ejb.EJBTransactionRolledbackException;
 import javax.ejb.Stateless;
-import javax.validation.executable.ExecutableType;
-import javax.validation.executable.ValidateOnExecution;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -78,7 +74,6 @@ public class AppUserResource {
 
     @DELETE
     @Path("/invalidate")
-    @Produces(MediaType.TEXT_PLAIN)
     public Response invalidate() {
         sessionBean.endSession();
         return Response.ok().build();

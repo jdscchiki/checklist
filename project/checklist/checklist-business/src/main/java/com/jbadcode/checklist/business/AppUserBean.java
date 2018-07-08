@@ -5,6 +5,7 @@
  */
 package com.jbadcode.checklist.business;
 
+import com.jbadcode.checklist.business.security.HashManager;
 import com.jbadcode.checklist.log.LoggerBean;
 import com.jbadcode.checklist.log.exception.ApplicationException;
 import com.jbadcode.checklist.log.exception.list.ApplicationExceptionList;
@@ -12,6 +13,8 @@ import com.jbadcode.checklist.log.exception.list.SystemExceptionList;
 import com.jbadcode.checklist.log.exception.list.UserExceptionList;
 import com.jbadcode.checklist.persistence.entity.AppUser;
 import com.jbadcode.checklist.persistence.facede.AppUserFacade;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
@@ -67,13 +70,15 @@ public class AppUserBean extends BussinesAbstractBean {
             throws ApplicationException {
         try {
             AppUser appUser = appUserFacade.getByNick(nick);
-            if (appUser.getPassword().equals(password)) {
+            if (HashManager.verifyPassword(password, appUser.getPassword())) {
                 return appUser;
             } else {
                 throw new ApplicationException(
                         userExceptionCode.UE_000_002);
             }
-        } catch (PersistenceException ex) {
+        } catch (PersistenceException
+                | HashManager.CannotPerformOperationException
+                | HashManager.InvalidHashException ex) {
             loggerBean.logb(ex).
                     handleWithoutLog(
                             NoResultException.class,
@@ -84,6 +89,12 @@ public class AppUserBean extends BussinesAbstractBean {
                     handle(
                             PersistenceException.class,
                             SystemExceptionList.SE_000_001).
+                    handle(
+                            HashManager.CannotPerformOperationException.class,
+                            SystemExceptionList.SE_000_002).
+                    handle(
+                            HashManager.InvalidHashException.class,
+                            SystemExceptionList.SE_000_002).
                     handleDefault();
             return null;
         }

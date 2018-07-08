@@ -11,7 +11,15 @@ package com.jbadcode.checklist.log.exception.list;
  */
 public enum SystemExceptionList implements ExceptionListEnum {
 
-    SE_000_001;
+    /**
+     * DATABASE ERROR
+     */
+    SE_000_001,
+    /**
+     * ENCRYPTION ERROR
+     */
+    SE_000_002,
+    ;
 
     @Override
     public String getCode() {
