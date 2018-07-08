@@ -10,6 +10,7 @@ import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.ext.Provider;
 import java.util.UUID;
 import javax.annotation.Priority;
+import javax.ws.rs.container.PreMatching;
 
 /**
  *
@@ -17,6 +18,7 @@ import javax.annotation.Priority;
  */
 @Provider
 @Priority(1)
+@PreMatching
 public class TransactionIdAsignatorFilter implements ContainerRequestFilter {
 
     @Override

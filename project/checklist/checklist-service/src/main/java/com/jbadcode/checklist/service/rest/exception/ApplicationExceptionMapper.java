@@ -23,28 +23,17 @@ import javax.ws.rs.ext.Provider;
  * @author Juan David Segura
  */
 @Provider
-public class ApplicationExceptionMapper implements ExceptionMapper<Exception> {
+public class ApplicationExceptionMapper implements ExceptionMapper<ApplicationException> {
 
     private static final Logger logger = Logger.getLogger(ApplicationExceptionMapper.class.getName());
 
     @Override
-    public Response toResponse(Exception exception) {
-        Throwable cause;
-        if (exception instanceof EJBTransactionRolledbackException) {
-            cause = exception.getCause();
-        } else {
-            cause = exception;
-        }
-        if (cause instanceof ApplicationException) {
-            ApplicationException applicationException = (ApplicationException) cause;
-            return Response.
-                    status(transformCode(applicationException.getExceptionCode())).
-                    entity(new ExceptionContainer(applicationException)).
-                    build();
-        } else {
-            logger.log(Level.SEVERE, "", cause);
-            throw new WebApplicationException(cause);
-        }
+    public Response toResponse(ApplicationException exception) {
+        ApplicationException applicationException = (ApplicationException) exception;
+        return Response.
+                status(transformCode(applicationException.getExceptionCode())).
+                entity(new ExceptionContainer(applicationException)).
+                build();
     }
 
     private Response.Status transformCode(ExceptionListEnum exceptionListEnum) {

@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 import javax.annotation.Priority;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
+import javax.ws.rs.container.PreMatching;
 import javax.ws.rs.core.Cookie;
 import javax.ws.rs.ext.Provider;
 
@@ -26,6 +27,7 @@ import javax.ws.rs.ext.Provider;
  */
 @Provider
 @Priority(2)
+@PreMatching
 public class RequestLoggerFilter implements ContainerRequestFilter {
 
     private static final Logger logger = Logger.getLogger(RequestLoggerFilter.class.getName());
