@@ -5,6 +5,7 @@
  */
 package com.jbadcode.checklist.persistence.entity;
 
+import com.jbadcode.checklist.persistence.entity.entityfiltering.AppUser.PasswordView;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;
@@ -51,6 +52,7 @@ public class AppUser implements Serializable {
     @NotNull
     @Size(min = 1, max = 256)
     @Column(name = "password")
+    @PasswordView
     private String password;
     @Size(max = 128)
     @Column(name = "firts_name")
@@ -97,6 +99,7 @@ public class AppUser implements Serializable {
         this.nick = nick;
     }
 
+    
     public String getPassword() {
         return password;
     }

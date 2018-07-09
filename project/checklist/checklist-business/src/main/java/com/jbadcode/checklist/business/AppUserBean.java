@@ -13,8 +13,6 @@ import com.jbadcode.checklist.log.exception.list.SystemExceptionList;
 import com.jbadcode.checklist.log.exception.list.UserExceptionList;
 import com.jbadcode.checklist.persistence.entity.AppUser;
 import com.jbadcode.checklist.persistence.facede.AppUserFacade;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
@@ -60,13 +58,12 @@ public class AppUserBean extends BussinesAbstractBean {
 
     @PostConstruct
     public void init() {
-        loggerBean.setBaseClazz(AppUserBean.class);
         loggerBean.setTransactionId(getProcessIdentificator());
     }
 
     public AppUser authenticate(
-            @NotNull(message = "nick=null") @Size(min = 1, message = "nick=''") String nick,
-            @NotNull(message = "password=null") @Size(min = 1, message = "password=''") String password)
+            @NotNull(message = "empty nick") @Size(min = 1, message = "empty nick") String nick,
+            @NotNull(message = "empty password") @Size(min = 1, message = "empty password") String password)
             throws ApplicationException {
         try {
             AppUser appUser = appUserFacade.getByNick(nick);
@@ -79,7 +76,7 @@ public class AppUserBean extends BussinesAbstractBean {
         } catch (PersistenceException
                 | HashManager.CannotPerformOperationException
                 | HashManager.InvalidHashException ex) {
-            loggerBean.logb(ex).
+            loggerBean.catchException(ex).
                     handleWithoutLog(
                             NoResultException.class,
                             userExceptionCode.UE_000_001).

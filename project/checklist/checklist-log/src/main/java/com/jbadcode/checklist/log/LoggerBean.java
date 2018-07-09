@@ -25,92 +25,17 @@ import javax.ejb.LocalBean;
 @LocalBean
 public class LoggerBean {
 
-    private Class baseClazz;
     private String transactionId;
-
-    public void setBaseClazz(Class baseClazz) {
-        this.baseClazz = baseClazz;
-    }
 
     public void setTransactionId(String transactionId) {
         this.transactionId = transactionId;
     }
 
-    private String writeMessage(String message) {
-        StringBuilder stringBuilder = new StringBuilder();
-
-        stringBuilder.append("Transaction=");
-        stringBuilder.append(transactionId);
-        if (message != null && !message.isEmpty()) {
-            stringBuilder.append(";");
-            stringBuilder.append("message=");
-            stringBuilder.append(message);
-        }
-        return stringBuilder.toString();
-    }
-
-    public void log(String message) {
-        message = writeMessage(message);
-        if (baseClazz == null) {
-            Logger.getGlobal().log(
-                    Level.WARNING,
-                    message);
-        } else {
-            Logger.getLogger(
-                    baseClazz.getName()
-            ).log(
-                    Level.WARNING,
-                    message);
-        }
-    }
-
-    public void log(String message,
-            ApplicationException applicationException) throws ApplicationException {
-        message = writeMessage(message);
-        if (baseClazz == null) {
-            Logger.getGlobal().log(
-                    Level.WARNING,
-                    message,
-                    applicationException);
-            throw applicationException;
-        } else {
-            Logger.getLogger(
-                    baseClazz.getName()
-            ).log(
-                    Level.WARNING,
-                    message,
-                    applicationException);
-            throw applicationException;
-        }
-    }
-
-    public void log(String message,
-            Class clazz) {
-        message = writeMessage(message);
-        Logger.getLogger(
-                clazz.getName()
-        ).log(
-                Level.WARNING, message);
-    }
-
-    public void log(String message,
-            Class clazz,
-            ApplicationException applicationException) throws ApplicationException {
-        message = writeMessage(message);
-        Logger.getLogger(
-                clazz.getName()
-        ).log(
-                Level.WARNING,
-                message,
-                applicationException);
-        throw applicationException;
-    }
-
-    public ApplicationExceptionBuilder logb(Throwable throwable) {
+    public ApplicationExceptionBuilder catchException(Throwable throwable) {
         if (throwable instanceof EJBTransactionRolledbackException) {
-            return new ApplicationExceptionBuilder(throwable.getCause());
-        }else{
-            return new ApplicationExceptionBuilder(throwable);
+            return new ApplicationExceptionBuilder(throwable.getCause(), transactionId);
+        } else {
+            return new ApplicationExceptionBuilder(throwable, transactionId);
         }
     }
 }

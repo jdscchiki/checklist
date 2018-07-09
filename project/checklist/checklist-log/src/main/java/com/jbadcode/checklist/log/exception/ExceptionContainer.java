@@ -8,7 +8,14 @@ package com.jbadcode.checklist.log.exception;
 import com.jbadcode.checklist.log.exception.ApplicationException;
 import com.jbadcode.checklist.log.exception.list.UserExceptionList;
 import java.io.Serializable;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -24,12 +31,15 @@ public class ExceptionContainer implements Serializable {
 
     private ArrayList<String> log = new ArrayList<>();
 
+    private String server;
+
     public ExceptionContainer() {
     }
 
     public ExceptionContainer(ApplicationException applicationException) {
         this.exceptionCode = applicationException.getExceptionCode().getCode();
         if (applicationException.getCause() != null) {
+            this.server = getServerAddresses();
             for (StackTraceElement stackTraceElement : applicationException.getStackTrace()) {
                 log.add(stackTraceElement.toString());
             }
@@ -46,6 +56,27 @@ public class ExceptionContainer implements Serializable {
         }
     }
 
+    private String getServerAddresses() {
+        StringBuilder sb = new StringBuilder();
+        try {
+            Enumeration e = NetworkInterface.getNetworkInterfaces();
+            while (e.hasMoreElements()) {
+                NetworkInterface n = (NetworkInterface) e.nextElement();
+                if (!n.isLoopback() && n.isUp()) {
+                    Enumeration ee = n.getInetAddresses();
+                    while (ee.hasMoreElements()) {
+                        InetAddress i = (InetAddress) ee.nextElement();
+                        if (!i.isLinkLocalAddress()) {
+                            sb.append(i.getHostAddress()).append(";");
+                        }
+                    }
+                }
+            }
+        } catch (SocketException ex) {
+        }
+        return sb.toString();
+    }
+
     public String getExceptionCode() {
         return exceptionCode;
     }
@@ -60,6 +91,14 @@ public class ExceptionContainer implements Serializable {
 
     public void setLog(ArrayList<String> log) {
         this.log = log;
+    }
+
+    public String getServer() {
+        return server;
+    }
+
+    public void setServer(String server) {
+        this.server = server;
     }
 
 }

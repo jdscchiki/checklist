@@ -2,10 +2,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-    <artifactId>checklist</artifactId>
-    <groupId>com.jbadcode</groupId>
-    <version>1.0</version>
-  </parent>
+        <artifactId>checklist</artifactId>
+        <groupId>com.jbadcode</groupId>
+        <version>1.0</version>
+    </parent>
 
     <groupId>com.jbadcode</groupId>
     <artifactId>checklist-service</artifactId>
@@ -38,6 +38,18 @@
             <version>${project.version}</version>
             <scope>provided</scope>
             <type>ejb</type>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.ext</groupId>
+            <artifactId>jersey-entity-filtering</artifactId>
+            <version>2.27</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.core</groupId>
+            <artifactId>jersey-common</artifactId>
+            <version>2.27</version>
+            <type>jar</type>
         </dependency>
         <dependency>
             <groupId>javax</groupId>
