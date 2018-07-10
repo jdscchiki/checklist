@@ -12,5 +12,6 @@
     <module>checklist-persistence</module>
     <module>checklist-service</module>
     <module>checklist-log</module>
+    <module>checklist-entityfiltering</module>
   </modules>
 </project>

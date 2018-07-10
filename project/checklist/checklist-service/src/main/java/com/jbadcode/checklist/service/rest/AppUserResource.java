@@ -7,8 +7,10 @@ package com.jbadcode.checklist.service.rest;
 
 import com.jbadcode.checklist.service.rest.ejb.SessionBean;
 import com.jbadcode.checklist.business.AppUserBean;
+import com.jbadcode.checklist.entityfiltering.appuser.PasswordView;
 import com.jbadcode.checklist.persistence.entity.AppUser;
 import com.jbadcode.checklist.service.rest.config.RequestProperties;
+import java.lang.annotation.Annotation;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -68,7 +70,11 @@ public class AppUserResource {
                 authenticate(appUser.getNick(), appUser.getPassword());
         sessionBean.startSession(appUser);
         return Response.
-                ok(appUser).
+                ok().
+//                entity(appUser, new Annotation[]{
+//                    PasswordView.Factory.get()
+//                }).
+                entity(appUser, new Annotation[0]).
                 build();
     }
 

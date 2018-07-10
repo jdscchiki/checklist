@@ -5,7 +5,7 @@
  */
 package com.jbadcode.checklist.persistence.entity;
 
-import com.jbadcode.checklist.persistence.entity.entityfiltering.AppUser.PasswordView;
+import com.jbadcode.checklist.entityfiltering.appuser.PasswordView;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;
@@ -63,12 +63,12 @@ public class AppUser implements Serializable {
     @JoinColumn(name = "state", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private State state;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "appUser")
-    private Collection<ProjectOwner> projectOwnerCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "appUser")
-    private Collection<ChecklistOwner> checklistOwnerCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "executor")
-    private Collection<RevisionResult> revisionResultCollection;
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "appUser")
+//    private Collection<ProjectOwner> projectOwnerCollection;
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "appUser")
+//    private Collection<ChecklistOwner> checklistOwnerCollection;
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "executor")
+//    private Collection<RevisionResult> revisionResultCollection;
 
     public AppUser() {
     }
@@ -132,32 +132,32 @@ public class AppUser implements Serializable {
         this.state = state;
     }
 
-    @XmlTransient
-    public Collection<ProjectOwner> getProjectOwnerCollection() {
-        return projectOwnerCollection;
-    }
-
-    public void setProjectOwnerCollection(Collection<ProjectOwner> projectOwnerCollection) {
-        this.projectOwnerCollection = projectOwnerCollection;
-    }
-
-    @XmlTransient
-    public Collection<ChecklistOwner> getChecklistOwnerCollection() {
-        return checklistOwnerCollection;
-    }
-
-    public void setChecklistOwnerCollection(Collection<ChecklistOwner> checklistOwnerCollection) {
-        this.checklistOwnerCollection = checklistOwnerCollection;
-    }
-
-    @XmlTransient
-    public Collection<RevisionResult> getRevisionResultCollection() {
-        return revisionResultCollection;
-    }
-
-    public void setRevisionResultCollection(Collection<RevisionResult> revisionResultCollection) {
-        this.revisionResultCollection = revisionResultCollection;
-    }
+//    @XmlTransient
+//    public Collection<ProjectOwner> getProjectOwnerCollection() {
+//        return projectOwnerCollection;
+//    }
+//
+//    public void setProjectOwnerCollection(Collection<ProjectOwner> projectOwnerCollection) {
+//        this.projectOwnerCollection = projectOwnerCollection;
+//    }
+//
+//    @XmlTransient
+//    public Collection<ChecklistOwner> getChecklistOwnerCollection() {
+//        return checklistOwnerCollection;
+//    }
+//
+//    public void setChecklistOwnerCollection(Collection<ChecklistOwner> checklistOwnerCollection) {
+//        this.checklistOwnerCollection = checklistOwnerCollection;
+//    }
+//
+//    @XmlTransient
+//    public Collection<RevisionResult> getRevisionResultCollection() {
+//        return revisionResultCollection;
+//    }
+//
+//    public void setRevisionResultCollection(Collection<RevisionResult> revisionResultCollection) {
+//        this.revisionResultCollection = revisionResultCollection;
+//    }
 
     @Override
     public int hashCode() {

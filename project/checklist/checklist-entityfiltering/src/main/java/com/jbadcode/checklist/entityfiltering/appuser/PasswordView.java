@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.jbadcode.checklist.persistence.entity.entityfiltering.AppUser;
+package com.jbadcode.checklist.entityfiltering.appuser;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.RetentionPolicy;
 
-import org.glassfish.jersey.internal.inject.AnnotationLiteral;
+import org.glassfish.hk2.api.AnnotationLiteral;
 import org.glassfish.jersey.message.filtering.EntityFiltering;
 
 /**
