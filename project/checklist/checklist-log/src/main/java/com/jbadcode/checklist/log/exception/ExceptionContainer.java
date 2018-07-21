@@ -6,7 +6,7 @@
 package com.jbadcode.checklist.log.exception;
 
 import com.jbadcode.checklist.log.exception.ApplicationException;
-import com.jbadcode.checklist.log.exception.list.UserExceptionList;
+import com.jbadcode.checklist.log.exception.codes.UserExceptionCode;
 import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -50,7 +50,7 @@ public class ExceptionContainer implements Serializable {
     }
 
     public ExceptionContainer(ConstraintViolationException constraintViolationException) {
-        this.exceptionCode = UserExceptionList.generalException.GUE_000_002.getCode();
+        this.exceptionCode = UserExceptionCode.GUE_000_002.getCode();
         for (ConstraintViolation<?> constraintViolation : constraintViolationException.getConstraintViolations()) {
             log.add(constraintViolation.getMessage());
         }

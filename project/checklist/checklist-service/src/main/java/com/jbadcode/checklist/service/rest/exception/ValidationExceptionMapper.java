@@ -7,8 +7,8 @@ package com.jbadcode.checklist.service.rest.exception;
 
 import com.jbadcode.checklist.log.exception.ExceptionContainer;
 import com.jbadcode.checklist.log.exception.ApplicationException;
-import com.jbadcode.checklist.log.exception.list.ExceptionListEnum;
-import com.jbadcode.checklist.log.exception.list.UserExceptionList;
+import com.jbadcode.checklist.log.exception.codes.ExceptionListEnum;
+import com.jbadcode.checklist.log.exception.codes.UserExceptionCode;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJBTransactionRolledbackException;

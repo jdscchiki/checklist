@@ -6,7 +6,7 @@
 package com.jbadcode.checklist.service.rest.ejb;
 
 import com.jbadcode.checklist.log.exception.ApplicationException;
-import com.jbadcode.checklist.log.exception.list.UserExceptionList;
+import com.jbadcode.checklist.log.exception.codes.UserExceptionCode;
 import com.jbadcode.checklist.persistence.entity.AppUser;
 import com.jbadcode.checklist.service.rest.util.SessionAttributes;
 import javax.ejb.Stateless;
@@ -33,7 +33,7 @@ public class SessionBean {
             return appUser;
         }else{
             throw new ApplicationException(
-                        UserExceptionList.generalException.GUE_000_001);
+                        UserExceptionCode.GUE_000_001);
         }
     }
 

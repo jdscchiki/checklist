@@ -8,9 +8,9 @@ package com.jbadcode.checklist.business;
 import com.jbadcode.checklist.business.security.HashManager;
 import com.jbadcode.checklist.log.LoggerBean;
 import com.jbadcode.checklist.log.exception.ApplicationException;
-import com.jbadcode.checklist.log.exception.list.ApplicationExceptionList;
-import com.jbadcode.checklist.log.exception.list.SystemExceptionList;
-import com.jbadcode.checklist.log.exception.list.UserExceptionList;
+import com.jbadcode.checklist.log.exception.codes.ApplicationExceptionCode;
+import com.jbadcode.checklist.log.exception.codes.SystemExceptionCode;
+import com.jbadcode.checklist.log.exception.codes.UserExceptionCode;
 import com.jbadcode.checklist.persistence.entity.AppUser;
 import com.jbadcode.checklist.persistence.facede.AppUserFacade;
 import javax.annotation.PostConstruct;
@@ -34,22 +34,6 @@ import javax.validation.executable.ValidateOnExecution;
 @ValidateOnExecution(type = ExecutableType.NON_GETTER_METHODS)
 public class AppUserBean extends BussinesAbstractBean {
 
-    public enum userExceptionCode implements UserExceptionList {
-        /**
-         * USER NOT FOUND
-         */
-        UE_000_001,
-        /**
-         * BAD PASSWORD
-         */
-        UE_000_002;
-
-        @Override
-        public String getCode() {
-            return this.name();
-        }
-    }
-
     @EJB
     private LoggerBean loggerBean;
 
@@ -71,27 +55,22 @@ public class AppUserBean extends BussinesAbstractBean {
                 return appUser;
             } else {
                 throw new ApplicationException(
-                        userExceptionCode.UE_000_002);
+                        UserExceptionCode.UE_000_002);
             }
         } catch (PersistenceException
                 | HashManager.CannotPerformOperationException
                 | HashManager.InvalidHashException ex) {
             loggerBean.catchException(ex).
-                    handleWithoutLog(
-                            NoResultException.class,
-                            userExceptionCode.UE_000_001).
-                    handle(
-                            NonUniqueResultException.class,
-                            ApplicationExceptionList.AE_000_001).
-                    handle(
-                            PersistenceException.class,
-                            SystemExceptionList.SE_000_001).
-                    handle(
-                            HashManager.CannotPerformOperationException.class,
-                            SystemExceptionList.SE_000_002).
-                    handle(
-                            HashManager.InvalidHashException.class,
-                            SystemExceptionList.SE_000_002).
+                    handleWithoutLog(NoResultException.class,
+                            UserExceptionCode.UE_000_001).
+                    handle(NonUniqueResultException.class,
+                            ApplicationExceptionCode.AE_000_001).
+                    handle(PersistenceException.class,
+                            SystemExceptionCode.SE_000_001).
+                    handle(HashManager.CannotPerformOperationException.class,
+                            SystemExceptionCode.SE_000_002).
+                    handle(HashManager.InvalidHashException.class,
+                            SystemExceptionCode.SE_000_002).
                     handleDefault();
             return null;
         }

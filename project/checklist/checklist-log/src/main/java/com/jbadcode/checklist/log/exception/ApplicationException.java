@@ -5,7 +5,7 @@
  */
 package com.jbadcode.checklist.log.exception;
 
-import com.jbadcode.checklist.log.exception.list.ExceptionListEnum;
+import com.jbadcode.checklist.log.exception.codes.ExceptionListEnum;
 
 /**
  *
