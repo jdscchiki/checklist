@@ -5,6 +5,8 @@
  */
 package com.jbadcode.checklist.persistence.entity;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.jbadcode.checklist.entityfiltering.GenericView;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;
@@ -48,6 +50,7 @@ public class ChecklistItem implements Serializable {
     @Column(name = "value")
     private String value;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "checklistItem")
+    @JsonView(GenericView.Collection.class)
     private Collection<RevisionResultItem> revisionResultItemCollection;
     @JoinColumn(name = "state", referencedColumnName = "id")
     @ManyToOne(optional = false)
@@ -56,11 +59,13 @@ public class ChecklistItem implements Serializable {
     @ManyToOne
     private ChecklistVersion checklistVersion;
     @OneToMany(mappedBy = "checklistParentItem")
+    @JsonView(GenericView.Collection.class)
     private Collection<ChecklistItem> checklistItemCollection;
     @JoinColumn(name = "checklist_parent_item", referencedColumnName = "id")
     @ManyToOne
     private ChecklistItem checklistParentItem;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "projectRevision")
+    @JsonView(GenericView.Collection.class)
     private Collection<RevisionResult> revisionResultCollection;
 
     public ChecklistItem() {
@@ -91,7 +96,6 @@ public class ChecklistItem implements Serializable {
         this.value = value;
     }
 
-    @XmlTransient
     public Collection<RevisionResultItem> getRevisionResultItemCollection() {
         return revisionResultItemCollection;
     }
@@ -116,7 +120,6 @@ public class ChecklistItem implements Serializable {
         this.checklistVersion = checklistVersion;
     }
 
-    @XmlTransient
     public Collection<ChecklistItem> getChecklistItemCollection() {
         return checklistItemCollection;
     }
@@ -133,7 +136,6 @@ public class ChecklistItem implements Serializable {
         this.checklistParentItem = checklistParentItem;
     }
 
-    @XmlTransient
     public Collection<RevisionResult> getRevisionResultCollection() {
         return revisionResultCollection;
     }

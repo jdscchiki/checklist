@@ -66,7 +66,7 @@ public class ResponseLoggerFilter implements ContainerResponseFilter {
             stringBuilder.append(key).append(": ").append(value.getValue());
             stringBuilder.append("\n");
         }
-        if (responseContext.hasEntity()) {
+        if (responseContext.hasEntity() && responseContext.getMediaType().isCompatible(MediaType.APPLICATION_JSON_TYPE)) {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             try {
                 stringBuilder.append("BODY=\n");
@@ -74,7 +74,6 @@ public class ResponseLoggerFilter implements ContainerResponseFilter {
                 Type entityType = responseContext.getEntityType();
                 Annotation[] entityAnnotations = responseContext.getEntityAnnotations();
                 MediaType mediaType = responseContext.getMediaType();
-                @SuppressWarnings("unchecked")
                 MessageBodyWriter<Object> bodyWriter = (MessageBodyWriter<Object>) providers.getMessageBodyWriter(entityClass,
                         entityType,
                         entityAnnotations,

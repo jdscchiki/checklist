@@ -5,6 +5,8 @@
  */
 package com.jbadcode.checklist.persistence.entity;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.jbadcode.checklist.entityfiltering.GenericView;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;
@@ -42,28 +44,40 @@ public class State implements Serializable {
     @Column(name = "name")
     private String name;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "state")
+    @JsonView(GenericView.Collection.class)
     private Collection<RevisionResultItem> revisionResultItemCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "state")
+    @JsonView(GenericView.Collection.class)
     private Collection<Project> projectCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "state")
+    @JsonView(GenericView.Collection.class)
     private Collection<Checklist> checklistCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "state")
+    @JsonView(GenericView.Collection.class)
     private Collection<ChecklistVersion> checklistVersionCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "state")
+    @JsonView(GenericView.Collection.class)
     private Collection<ChecklistItem> checklistItemCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "state")
+    @JsonView(GenericView.Collection.class)
     private Collection<AppUser> appUserCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "state")
+    @JsonView(GenericView.Collection.class)
     private Collection<ProjectOwner> projectOwnerCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "state")
+    @JsonView(GenericView.Collection.class)
     private Collection<ProjectSubversion> projectSubversionCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "state")
+    @JsonView(GenericView.Collection.class)
     private Collection<ProjectVersion> projectVersionCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "state")
+    @JsonView(GenericView.Collection.class)
     private Collection<ProjectRevision> projectRevisionCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "state")
+    @JsonView(GenericView.Collection.class)
     private Collection<ChecklistOwner> checklistOwnerCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "state")
+    @JsonView(GenericView.Collection.class)
     private Collection<RevisionResult> revisionResultCollection;
 
     public State() {
@@ -89,7 +103,6 @@ public class State implements Serializable {
         this.name = name;
     }
 
-    @XmlTransient
     public Collection<RevisionResultItem> getRevisionResultItemCollection() {
         return revisionResultItemCollection;
     }
@@ -98,7 +111,6 @@ public class State implements Serializable {
         this.revisionResultItemCollection = revisionResultItemCollection;
     }
 
-    @XmlTransient
     public Collection<Project> getProjectCollection() {
         return projectCollection;
     }
@@ -107,7 +119,6 @@ public class State implements Serializable {
         this.projectCollection = projectCollection;
     }
 
-    @XmlTransient
     public Collection<Checklist> getChecklistCollection() {
         return checklistCollection;
     }
@@ -116,7 +127,6 @@ public class State implements Serializable {
         this.checklistCollection = checklistCollection;
     }
 
-    @XmlTransient
     public Collection<ChecklistVersion> getChecklistVersionCollection() {
         return checklistVersionCollection;
     }
@@ -125,7 +135,6 @@ public class State implements Serializable {
         this.checklistVersionCollection = checklistVersionCollection;
     }
 
-    @XmlTransient
     public Collection<ChecklistItem> getChecklistItemCollection() {
         return checklistItemCollection;
     }
@@ -134,7 +143,6 @@ public class State implements Serializable {
         this.checklistItemCollection = checklistItemCollection;
     }
 
-    @XmlTransient
     public Collection<AppUser> getAppUserCollection() {
         return appUserCollection;
     }
@@ -143,7 +151,6 @@ public class State implements Serializable {
         this.appUserCollection = appUserCollection;
     }
 
-    @XmlTransient
     public Collection<ProjectOwner> getProjectOwnerCollection() {
         return projectOwnerCollection;
     }
@@ -152,7 +159,6 @@ public class State implements Serializable {
         this.projectOwnerCollection = projectOwnerCollection;
     }
 
-    @XmlTransient
     public Collection<ProjectSubversion> getProjectSubversionCollection() {
         return projectSubversionCollection;
     }
@@ -161,7 +167,6 @@ public class State implements Serializable {
         this.projectSubversionCollection = projectSubversionCollection;
     }
 
-    @XmlTransient
     public Collection<ProjectVersion> getProjectVersionCollection() {
         return projectVersionCollection;
     }
@@ -170,7 +175,6 @@ public class State implements Serializable {
         this.projectVersionCollection = projectVersionCollection;
     }
 
-    @XmlTransient
     public Collection<ProjectRevision> getProjectRevisionCollection() {
         return projectRevisionCollection;
     }
@@ -179,7 +183,6 @@ public class State implements Serializable {
         this.projectRevisionCollection = projectRevisionCollection;
     }
 
-    @XmlTransient
     public Collection<ChecklistOwner> getChecklistOwnerCollection() {
         return checklistOwnerCollection;
     }
@@ -188,7 +191,6 @@ public class State implements Serializable {
         this.checklistOwnerCollection = checklistOwnerCollection;
     }
 
-    @XmlTransient
     public Collection<RevisionResult> getRevisionResultCollection() {
         return revisionResultCollection;
     }

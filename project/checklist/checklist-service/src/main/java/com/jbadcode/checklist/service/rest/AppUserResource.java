@@ -5,9 +5,10 @@
  */
 package com.jbadcode.checklist.service.rest;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.jbadcode.checklist.service.rest.ejb.SessionBean;
 import com.jbadcode.checklist.business.AppUserBean;
-import com.jbadcode.checklist.entityfiltering.appuser.PasswordView;
+import com.jbadcode.checklist.entityfiltering.GenericView;
 import com.jbadcode.checklist.persistence.entity.AppUser;
 import com.jbadcode.checklist.service.rest.config.RequestProperties;
 import java.lang.annotation.Annotation;
@@ -65,17 +66,11 @@ public class AppUserResource {
      */
     @POST
     @Path("/authenticate")
-    public Response authenticate(AppUser appUser) throws Exception {
+    public AppUser authenticate(AppUser appUser) throws Exception {
         appUser = appUserBean.
                 authenticate(appUser.getNick(), appUser.getPassword());
         sessionBean.startSession(appUser);
-        return Response.
-                ok().
-//                entity(appUser, new Annotation[]{
-//                    PasswordView.Factory.get()
-//                }).
-                entity(appUser, new Annotation[0]).
-                build();
+        return appUser;
     }
 
     @DELETE

@@ -9,20 +9,6 @@
     <artifactId>checklist-entityfiltering</artifactId>
     <packaging>jar</packaging>
     <dependencies>
-        <dependency>
-            <groupId>org.glassfish.jersey.ext</groupId>
-            <artifactId>jersey-entity-filtering</artifactId>
-            <version>2.22.4</version>
-            <scope>provided</scope>
-            <type>jar</type>
-        </dependency>
-        <dependency>
-            <groupId>org.glassfish.hk2</groupId>
-            <artifactId>hk2-api</artifactId>
-            <version>2.5.0-b36</version>
-            <scope>provided</scope>
-            <type>jar</type>
-        </dependency>
     </dependencies>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

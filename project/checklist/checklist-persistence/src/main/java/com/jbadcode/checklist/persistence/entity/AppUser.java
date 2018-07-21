@@ -5,7 +5,9 @@
  */
 package com.jbadcode.checklist.persistence.entity;
 
-import com.jbadcode.checklist.entityfiltering.appuser.PasswordView;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.jbadcode.checklist.entityfiltering.AppUserView;
+import com.jbadcode.checklist.entityfiltering.GenericView;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;
@@ -24,7 +26,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -33,8 +34,6 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "app_user")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "AppUser.findAll", query = "SELECT a FROM AppUser a")})
 public class AppUser implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -52,7 +51,7 @@ public class AppUser implements Serializable {
     @NotNull
     @Size(min = 1, max = 256)
     @Column(name = "password")
-    @PasswordView
+    @JsonView(AppUserView.Password.class)
     private String password;
     @Size(max = 128)
     @Column(name = "firts_name")
@@ -64,10 +63,13 @@ public class AppUser implements Serializable {
     @ManyToOne(optional = false)
     private State state;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "appUser")
+    @JsonView(GenericView.Collection.class)
     private Collection<ProjectOwner> projectOwnerCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "appUser")
+    @JsonView(GenericView.Collection.class)
     private Collection<ChecklistOwner> checklistOwnerCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "executor")
+    @JsonView(GenericView.Collection.class)
     private Collection<RevisionResult> revisionResultCollection;
 
     public AppUser() {
@@ -131,8 +133,7 @@ public class AppUser implements Serializable {
     public void setState(State state) {
         this.state = state;
     }
-
-    @XmlTransient
+    
     public Collection<ProjectOwner> getProjectOwnerCollection() {
         return projectOwnerCollection;
     }
@@ -141,7 +142,6 @@ public class AppUser implements Serializable {
         this.projectOwnerCollection = projectOwnerCollection;
     }
 
-    @XmlTransient
     public Collection<ChecklistOwner> getChecklistOwnerCollection() {
         return checklistOwnerCollection;
     }
@@ -150,7 +150,6 @@ public class AppUser implements Serializable {
         this.checklistOwnerCollection = checklistOwnerCollection;
     }
 
-    @XmlTransient
     public Collection<RevisionResult> getRevisionResultCollection() {
         return revisionResultCollection;
     }

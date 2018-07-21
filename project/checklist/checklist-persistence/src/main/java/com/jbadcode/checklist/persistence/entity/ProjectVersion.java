@@ -5,6 +5,8 @@
  */
 package com.jbadcode.checklist.persistence.entity;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.jbadcode.checklist.entityfiltering.GenericView;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;
@@ -46,6 +48,7 @@ public class ProjectVersion implements Serializable {
     @Column(name = "value")
     private int value;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "projectVersion")
+    @JsonView(GenericView.Collection.class)
     private Collection<ProjectSubversion> projectSubversionCollection;
     @JoinColumn(name = "state", referencedColumnName = "id")
     @ManyToOne(optional = false)
@@ -82,7 +85,6 @@ public class ProjectVersion implements Serializable {
         this.value = value;
     }
 
-    @XmlTransient
     public Collection<ProjectSubversion> getProjectSubversionCollection() {
         return projectSubversionCollection;
     }
