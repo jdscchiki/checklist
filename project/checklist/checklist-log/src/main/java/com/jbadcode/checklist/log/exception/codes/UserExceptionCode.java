@@ -26,7 +26,11 @@ public enum UserExceptionCode implements ExceptionListEnum {
     /**
      * BAD PASSWORD
      */
-    UE_000_002;
+    UE_000_002,
+    /**
+     * NICK ALREADY EXIST
+     */
+    UE_000_003;
 
     @Override
     public String getCode() {

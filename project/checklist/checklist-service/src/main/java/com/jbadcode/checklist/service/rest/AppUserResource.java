@@ -5,13 +5,10 @@
  */
 package com.jbadcode.checklist.service.rest;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import com.jbadcode.checklist.service.rest.ejb.SessionBean;
 import com.jbadcode.checklist.business.AppUserBean;
-import com.jbadcode.checklist.entityfiltering.GenericView;
 import com.jbadcode.checklist.persistence.entity.AppUser;
 import com.jbadcode.checklist.service.rest.config.RequestProperties;
-import java.lang.annotation.Annotation;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -20,6 +17,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.Produces;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.MediaType;
@@ -70,6 +68,22 @@ public class AppUserResource {
         appUser = appUserBean.
                 authenticate(appUser.getNick(), appUser.getPassword());
         sessionBean.startSession(appUser);
+        return appUser;
+    }
+    
+    /**
+     * Retrieves representation of an instance of
+     * com.jbadcode.checklist.service.rest.AppUserResource
+     *
+     * @param appUser
+     * @return an instance of java.lang.String
+     * @throws java.lang.Exception
+     */
+    @PUT
+    @Path("/register")
+    public AppUser register(AppUser appUser) throws Exception {
+        appUser = appUserBean.
+                register(appUser);
         return appUser;
     }
 

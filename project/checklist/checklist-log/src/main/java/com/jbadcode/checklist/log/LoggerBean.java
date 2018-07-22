@@ -7,8 +7,8 @@ package com.jbadcode.checklist.log;
 
 import com.jbadcode.checklist.log.exception.ApplicationException;
 import com.jbadcode.checklist.log.exception.ApplicationExceptionBuilder;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import com.jbadcode.checklist.log.exception.codes.ExceptionListEnum;
+import javax.ejb.EJBException;
 import javax.ejb.EJBTransactionRolledbackException;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
@@ -30,9 +30,18 @@ public class LoggerBean {
     public void setTransactionId(String transactionId) {
         this.transactionId = transactionId;
     }
+    
+    public void throwException(ExceptionListEnum exceptionCode) throws ApplicationException{
+        throw new ApplicationException(exceptionCode);
+    }
+    
+    public void throwException(ExceptionListEnum exceptionCode, String message) throws ApplicationException{
+        throw new ApplicationException(exceptionCode, message);
+    }
 
     public ApplicationExceptionBuilder catchException(Throwable throwable) {
-        if (throwable instanceof EJBTransactionRolledbackException) {
+        if ((throwable instanceof EJBTransactionRolledbackException)
+                || (throwable instanceof EJBException)) {
             return new ApplicationExceptionBuilder(throwable.getCause(), transactionId);
         } else {
             return new ApplicationExceptionBuilder(throwable, transactionId);

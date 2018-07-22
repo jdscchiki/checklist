@@ -5,7 +5,7 @@
  */
 package com.jbadcode.checklist.service.rest.config;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javax.ws.rs.ext.ContextResolver;
@@ -24,6 +24,7 @@ public class DefaultMapper implements ContextResolver<ObjectMapper> {
         objectMapper = new ObjectMapper();
         objectMapper.setConfig(objectMapper.getSerializationConfig().withView(Object.class)); 
         objectMapper.enable(MapperFeature.DEFAULT_VIEW_INCLUSION);
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
     }
 
     @Override

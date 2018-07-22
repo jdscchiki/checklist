@@ -5,10 +5,14 @@
  */
 package com.jbadcode.checklist.business;
 
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+
 /**
  *
  * @author Juan David Segura
  */
+@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 public abstract class BussinesAbstractBean {
 
     private String processIdentificator;

@@ -17,6 +17,8 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceException;
@@ -45,6 +47,7 @@ public class AppUserBean extends BussinesAbstractBean {
         loggerBean.setTransactionId(getProcessIdentificator());
     }
 
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public AppUser authenticate(
             @NotNull(message = "empty nick") @Size(min = 1, message = "empty nick") String nick,
             @NotNull(message = "empty password") @Size(min = 1, message = "empty password") String password)
@@ -57,9 +60,7 @@ public class AppUserBean extends BussinesAbstractBean {
                 throw new ApplicationException(
                         UserExceptionCode.UE_000_002);
             }
-        } catch (PersistenceException
-                | HashManager.CannotPerformOperationException
-                | HashManager.InvalidHashException ex) {
+        } catch (Exception ex) {
             loggerBean.catchException(ex).
                     handleWithoutLog(NoResultException.class,
                             UserExceptionCode.UE_000_001).
@@ -74,5 +75,37 @@ public class AppUserBean extends BussinesAbstractBean {
                     handleDefault();
             return null;
         }
+    }
+    
+    public AppUser register(AppUser appUser) throws ApplicationException{
+        
+        try{
+            appUserFacade.getByNick(appUser.getNick());
+            loggerBean.throwException(UserExceptionCode.UE_000_003);
+        }catch(Exception ex){
+            loggerBean.catchException(ex).
+                    pass(NoResultException.class).
+                    rethrow(UserExceptionCode.UE_000_003).
+                    handle(NonUniqueResultException.class,
+                            UserExceptionCode.UE_000_002).
+                    handle(PersistenceException.class,
+                            SystemExceptionCode.SE_000_001).
+                    handleDefault();
+        }
+        try{
+            appUser.setPassword(
+                    HashManager.createHash(
+                            appUser.getPassword()));
+            appUserFacade.create(appUser);
+            return appUser;
+        }catch(Exception e){
+            loggerBean.catchException(e).
+                    handle(PersistenceException.class,
+                            SystemExceptionCode.SE_000_001).
+                    handle(HashManager.CannotPerformOperationException.class,
+                            SystemExceptionCode.SE_000_002).
+                    handleDefault();
+        }
+        return null;
     }
 }

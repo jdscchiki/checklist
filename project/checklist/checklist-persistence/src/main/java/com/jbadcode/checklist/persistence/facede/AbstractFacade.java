@@ -6,6 +6,8 @@
 package com.jbadcode.checklist.persistence.facede;
 
 import java.util.List;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 
@@ -27,28 +29,34 @@ public abstract class AbstractFacade<T> {
         return getEntityManager().getCriteriaBuilder();
     }
     
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public void create(T entity) {
         getEntityManager().persist(entity);
     }
 
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public void edit(T entity) {
         getEntityManager().merge(entity);
     }
 
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public void remove(T entity) {
         getEntityManager().remove(getEntityManager().merge(entity));
     }
 
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public T find(Object id) {
         return getEntityManager().find(entityClass, id);
     }
 
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public List<T> findAll() {
         javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
         cq.select(cq.from(entityClass));
         return getEntityManager().createQuery(cq).getResultList();
     }
 
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public List<T> findRange(int[] range) {
         javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
         cq.select(cq.from(entityClass));
@@ -58,6 +66,7 @@ public abstract class AbstractFacade<T> {
         return q.getResultList();
     }
 
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public int count() {
         javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
         javax.persistence.criteria.Root<T> rt = cq.from(entityClass);
