@@ -62,6 +62,7 @@ public class AppUserBean extends BussinesAbstractBean {
             }
         } catch (Exception ex) {
             loggerBean.catchException(ex).
+                    rethrow(UserExceptionCode.UE_000_002).
                     handleWithoutLog(NoResultException.class,
                             UserExceptionCode.UE_000_001).
                     handle(NonUniqueResultException.class,

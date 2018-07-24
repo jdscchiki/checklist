@@ -7,6 +7,7 @@ package com.jbadcode.checklist.service.rest;
 
 import com.jbadcode.checklist.service.rest.ejb.SessionBean;
 import com.jbadcode.checklist.business.AppUserBean;
+import com.jbadcode.checklist.log.exception.ApplicationException;
 import com.jbadcode.checklist.persistence.entity.AppUser;
 import com.jbadcode.checklist.service.rest.config.RequestProperties;
 import javax.annotation.PostConstruct;
@@ -51,20 +52,30 @@ public class AppUserResource {
 
     @PostConstruct
     public void init() {
-        appUserBean.setProcessIdentificator(containerRequest.getProperty(RequestProperties.PROCESS_IDENTIFICAROR.name()).toString());
+        appUserBean.setProcessIdentificator(
+                containerRequest.getProperty(
+                        RequestProperties.PROCESS_IDENTIFICAROR.name()).toString());
     }
 
     /**
-     * Retrieves representation of an instance of
-     * com.jbadcode.checklist.service.rest.AppUserResource
+     * Give Authentication and return user data,
+     * if the user nick and password are correct
      *
-     * @param appUser
-     * @return an instance of java.lang.String
-     * @throws java.lang.Exception
+     * @param appUser AppUser whit nick and password
+     * @return an instance of AppUser
+     * @throws ApplicationException returns exception codes 
+     * <ul>
+     * <li>UE_000_001</li>
+     * <li>UE_000_002</li>
+     * <li>AE_000_001</li>
+     * <li>SE_000_001</li>
+     * <li>SE_000_002</li>
+     * </ul>
+     * @throws Exception invalid user input data or database failure
      */
     @POST
     @Path("/authenticate")
-    public AppUser authenticate(AppUser appUser) throws Exception {
+    public AppUser authenticate(AppUser appUser) throws ApplicationException, Exception {
         appUser = appUserBean.
                 authenticate(appUser.getNick(), appUser.getPassword());
         sessionBean.startSession(appUser);
@@ -72,8 +83,7 @@ public class AppUserResource {
     }
     
     /**
-     * Retrieves representation of an instance of
-     * com.jbadcode.checklist.service.rest.AppUserResource
+     * Registers the user's credentials, if the nick has not yet been used
      *
      * @param appUser
      * @return an instance of java.lang.String
@@ -81,7 +91,7 @@ public class AppUserResource {
      */
     @PUT
     @Path("/register")
-    public AppUser register(AppUser appUser) throws Exception {
+    public AppUser register(AppUser appUser) throws ApplicationException, Exception {
         appUser = appUserBean.
                 register(appUser);
         return appUser;
